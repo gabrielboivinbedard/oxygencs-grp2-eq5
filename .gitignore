@@ -137,7 +137,6 @@ deploy_rsa.pub
 
 # Kubernetes config
 kubeconfig.yaml
-Pipfile
 Pipfile.lock
 
 .idea
