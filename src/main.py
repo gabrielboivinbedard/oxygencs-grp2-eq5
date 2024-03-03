@@ -13,7 +13,7 @@ class App:
         # To be configured by your team
         self.HOST = "http://159.203.50.162"  # Setup your host here
         self.TOKEN = "a77e02c82ab10e660da7"  # Setup your token here
-        self.T_MAX = 10  # Setup your max temperature here
+        self.T_MAX = 60  # Setup your max temperature here
         self.T_MIN = 30  # Setup your min temperature here
         self.DATABASE_URL = "157.230.69.113:5432"  # Setup your database here
 
