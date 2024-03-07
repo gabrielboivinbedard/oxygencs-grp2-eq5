@@ -1,1 +1,25 @@
-## To implement
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-yaml
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [ python ]
+        require_serial: true
+      - id: run-tests
+        name: Run Unit Tests
+        entry: python
+        args: [ "-m", "unittest", "test/test.py" ]
+        language: system
+        pass_filenames: false
+        files: test/test.py
