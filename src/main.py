@@ -1,8 +1,8 @@
-from signalrcore.hub_connection_builder import HubConnectionBuilder
 import logging
-import requests
 import json
 import time
+from signalrcore.hub_connection_builder import HubConnectionBuilder
+import requests
 
 
 class App:
@@ -18,7 +18,7 @@ class App:
         self.DATABASE_URL = "157.230.69.113:5432"  # Setup your database here
 
     def __del__(self):
-        if self._hub_connection != None:
+        if self._hub_connection is not None:
             self._hub_connection.stop()
 
     def start(self):
@@ -60,8 +60,10 @@ class App:
             temperature = float(data[0]["data"])
             self.take_action(temperature)
             self.save_event_to_database(timestamp, temperature)
-        except Exception as err:
-            print(err)
+        except IndexError as index_err:
+            print(f"IndexError occurred: {index_err}")
+        except ValueError as value_err:
+            print(f"ValueError occurred: {value_err}")
 
     def take_action(self, temperature):
         """Take action to HVAC depending on current temperature."""
@@ -72,17 +74,22 @@ class App:
 
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
-        r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}")
-        details = json.loads(r.text)
-        print(details, flush=True)
+        try:
+            r = requests.get(
+                f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKS}", timeout=5
+            )
+            details = json.loads(r.text)
+            print(details, flush=True)
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred during the request: {e}")
 
     def save_event_to_database(self, timestamp, temperature):
         """Save sensor data into database."""
         try:
-            # To implement
+            # TODO: To implement
             pass
         except requests.exceptions.RequestException as e:
-            # To implement
+            # TODO: To implement
             pass
 
 

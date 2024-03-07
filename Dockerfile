@@ -1,15 +1,31 @@
-# syntax=docker/dockerfile:1
-FROM python:3.12.1-slim
+# Stage 1: Build the application
+FROM python:3.8-slim AS builder
 
-# Installer les dépendances de l'application
-RUN apt-get update && apt-get install -y python3 python3-pip
+WORKDIR /app
 
-# Installer les dépendances Python
-RUN pip install signalrcore flask requests
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+ && rm -rf /var/lib/apt/lists/*
 
-# Copier le code source dans le conteneur
-COPY src/main.py /
+# Copy only the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
 
-# Configuration finale
-ENV PYTHONUNBUFFERED=1
+# Stage 2: Create the final image
+FROM python:3.8-slim
+
+WORKDIR /app
+
+# Copy the installed dependencies from the builder stage
+COPY --from=builder /root/.local /root/.local
+
+# Set PATH environment variable
+ENV PATH=/root/.local/bin:$PATH
+
+# Copy the rest of the application code
+COPY src/main.py /app/
+
+# Run the application
 CMD ["python", "main.py"]
