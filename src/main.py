@@ -3,10 +3,10 @@ import json
 import time
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
-from configDB import load_config,connect
+from .configDB import load_config,connect
 
 
-class App:
+class App: 
     def __init__(self):
         self._hub_connection = None
         self.TICKS = 10
