@@ -3,6 +3,7 @@ import json
 import time
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
+from configDB import load_config,connect
 
 
 class App:
@@ -16,7 +17,9 @@ class App:
         self.T_MAX = 60  # Setup your max temperature here
         self.T_MIN = 30  # Setup your min temperature here
         self.DATABASE_URL = "157.230.69.113:5432"  # Setup your database here
-
+        dbconfig = load_config()
+        self.conn = connect(dbconfig)
+                
     def __del__(self):
         if self._hub_connection is not None:
             self._hub_connection.stop()
@@ -58,19 +61,21 @@ class App:
             print(data[0]["date"] + " --> " + data[0]["data"], flush=True)
             timestamp = data[0]["date"]
             temperature = float(data[0]["data"])
-            self.take_action(temperature)
-            self.save_event_to_database(timestamp, temperature)
+            self.take_action(temperature, timestamp)
+            self.save_temperature_to_database(timestamp, temperature)
         except IndexError as index_err:
             print(f"IndexError occurred: {index_err}")
         except ValueError as value_err:
             print(f"ValueError occurred: {value_err}")
 
-    def take_action(self, temperature):
+    def take_action(self, temperature, timestamp):
         """Take action to HVAC depending on current temperature."""
         if float(temperature) >= float(self.T_MAX):
             self.send_action_to_hvac("TurnOnAc")
+            self.save_event_to_database(timestamp, "AC")
         elif float(temperature) <= float(self.T_MIN):
             self.send_action_to_hvac("TurnOnHeater")
+            self.save_event_to_database(timestamp, "TurnOnHeater")
 
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
@@ -83,15 +88,32 @@ class App:
         except requests.exceptions.RequestException as e:
             print(f"An error occurred during the request: {e}")
 
-    def save_event_to_database(self, timestamp, temperature):
+    def save_temperature_to_database(self, timestamp, temperature):
         """Save sensor data into database."""
         try:
-            # TODO: To implement
+            cur = self.conn.cursor()
+            sql = """INSERT INTO temperatures (timestamp, temperature) VALUES (%s, %s)"""
+            cur.execute(sql,(timestamp,temperature))
+            self.conn.commit()
             pass
         except requests.exceptions.RequestException as e:
-            # TODO: To implement
+            print(e)
+            print("The database commit failed for values : %s,%s",(timestamp,temperature))
             pass
 
+    def save_event_to_database(self, timestamp, event):
+        """Save sensor data into database."""
+        try:
+            cur = self.conn.cursor()
+            sql = """INSERT INTO events (timestamp, event) VALUES (%s, %s)"""
+            cur.execute(sql,(timestamp,event))
+            self.conn.commit()
+            
+            pass
+        except requests.exceptions.RequestException as e:
+            print(e)
+            print("The database commit failed for values : %s,%s",(timestamp,event))
+            pass
 
 if __name__ == "__main__":
     app = App()
