@@ -1,8 +1,8 @@
-name: CI for static code analysing and formatting
+name: CI for build and push image on DockerHub
 
 on:
   push:
-    branches: ["main2"]
+    branches: ["main"]
 
 jobs:
   test-and-analyze:
