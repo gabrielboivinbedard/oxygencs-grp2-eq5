@@ -6,7 +6,7 @@ import requests
 from .configDB import load_config,connect
 
 
-class App:
+class App: 
     def __init__(self):
         self._hub_connection = None
         self.TICKS = 10
