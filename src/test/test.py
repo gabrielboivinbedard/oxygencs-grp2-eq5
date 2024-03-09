@@ -3,7 +3,12 @@ import time
 from unittest.mock import patch
 import sys
 
-from src.main import App
+# When calling test with -m option it prepend the local path to sys.path
+sys.path.append(sys.path[0]+"\\src")
+print("HERE 2")
+print(sys.path)
+
+from main import App
 
 
 class TestApp(unittest.TestCase):
