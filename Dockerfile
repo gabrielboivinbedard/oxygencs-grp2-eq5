@@ -1,6 +1,8 @@
 # Stage 1: Build the application
 FROM python:3.8-slim AS builder
 
+EXPOSE 8000
+
 WORKDIR /app
 
 # Install build dependencies
