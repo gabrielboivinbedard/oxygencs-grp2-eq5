@@ -9,10 +9,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy only the requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
-
 # Stage 2: Create the final image
 FROM python:3.8-slim
 
@@ -27,5 +23,14 @@ ENV PATH=/root/.local/bin:$PATH
 # Copy the rest of the application code
 COPY src/main.py /app/
 
+# Create venv environment
+RUN python -m pip install --user virtualenv  
+RUN python -m virtualenv /oxygenVenv
+RUN source /oxygenVenv/Scripts/activate
+
+# Copy only the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Run the application
-CMD ["python", "main.py"]
+CMD pipenv run start

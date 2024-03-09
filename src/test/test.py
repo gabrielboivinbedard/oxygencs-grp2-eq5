@@ -1,6 +1,9 @@
 import unittest
 import time
 from unittest.mock import patch
+import sys
+# When calling test with -m option it prepend the local path to sys.path
+sys.path.append(sys.path[0]+"\\src")
 from src.main import App
 
 
