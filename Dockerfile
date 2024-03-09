@@ -28,4 +28,4 @@ ENV PATH=/root/.local/bin:$PATH
 COPY src/ /app/
 
 # Run the application
-CMD pipenv run start
+CMD ["python", "main.py"]
