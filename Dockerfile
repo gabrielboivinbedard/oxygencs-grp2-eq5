@@ -27,7 +27,7 @@ COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
 # Copy the rest of the application code
-COPY src/ /app/
+COPY . /app/
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
