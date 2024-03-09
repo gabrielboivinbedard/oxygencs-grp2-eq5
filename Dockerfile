@@ -14,6 +14,15 @@ FROM python:3.8-slim
 
 WORKDIR /app
 
+# Create venv environment
+RUN python -m pip install --user virtualenv  
+RUN python -m virtualenv /oxygenVenv
+RUN source /oxygenVenv/Scripts/activate
+
+# Copy only the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Copy the installed dependencies from the builder stage
 COPY --from=builder /root/.local /root/.local
 
@@ -23,14 +32,6 @@ ENV PATH=/root/.local/bin:$PATH
 # Copy the rest of the application code
 COPY src/main.py /app/
 
-# Create venv environment
-RUN python -m pip install --user virtualenv  
-RUN python -m virtualenv /oxygenVenv
-RUN source /oxygenVenv/Scripts/activate
-
-# Copy only the requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the application
 CMD pipenv run start
