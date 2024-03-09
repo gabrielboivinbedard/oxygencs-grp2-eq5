@@ -25,7 +25,7 @@ COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
 # Copy the rest of the application code
-COPY src/main.py /app/
+COPY src/ /app/
 
 # Run the application
-CMD ["python", "main.py"]
+CMD pipenv run start
