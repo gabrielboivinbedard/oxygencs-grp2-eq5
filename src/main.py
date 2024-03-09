@@ -5,7 +5,7 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
 import sys
 print("HERE 1")
-print(sys.path)
+
 from configDB import load_config,connect
 
 
