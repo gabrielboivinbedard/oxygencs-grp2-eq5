@@ -5,8 +5,6 @@ import sys
 
 # When calling test with -m option it prepend the local path to sys.path
 sys.path.append(sys.path[0]+"/src")
-print("HERE 2")
-print(sys.path)
 
 from src.main import App
 

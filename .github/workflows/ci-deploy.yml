@@ -2,7 +2,7 @@ name: CI for build and push image on DockerHub
 
 on:
   push:
-    branches: ["94-docker-images"]
+    branches: ["main"]
 
 jobs:
   test-and-analyze:
@@ -29,6 +29,15 @@ jobs:
         with:
           image: raphdup/oxygencs-grp2-eq5
           tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+       
+      - name: Build and push Docker image to DockerHub with dockerId
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: raphdup/oxygencs-grp2-eq5
           registry: docker.io
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}

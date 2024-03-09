@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-import os
 import psycopg2
 
 def load_config(filename='./src/database.ini', section='postgresql'):
