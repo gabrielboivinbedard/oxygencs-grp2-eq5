@@ -17,9 +17,9 @@ WORKDIR /app
 # Create venv environment
 RUN python -m pip install --user virtualenv  
 RUN python -m virtualenv /root/oxygenVenv
-CMD pwd
-CMD ls -al
-RUN source /root/oxygenVenv/Scripts/activate
+RUN pwd
+RUN ls -al /root/oxygenVenv
+RUN source /root/oxygenVenv/bin/activate
 
 # Copy only the requirements file and install dependencies
 COPY requirements.txt .
