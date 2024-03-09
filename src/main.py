@@ -6,6 +6,7 @@ import requests
 import sys
 # When calling test with -m option it prepend the local path to sys.path
 sys.path.append(sys.path[0]+"\\src")
+print(sys.path)
 from configDB import load_config,connect
 
 
