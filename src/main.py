@@ -3,23 +3,27 @@ import json
 import time
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
-from .configDB import load_config,connect
+from configDB import DatabaseConfig
 
 
-class App: 
+class App:
     def __init__(self):
+        # Configurations
         self._hub_connection = None
         self.TICKS = 10
+        self.HOST = "http://159.203.50.162"
+        self.TOKEN = "a77e02c82ab10e660da7"
 
-        # To be configured by your team
-        self.HOST = "http://159.203.50.162"  # Setup your host here
-        self.TOKEN = "a77e02c82ab10e660da7"  # Setup your token here
-        self.T_MAX = 60  # Setup your max temperature here
-        self.T_MIN = 30  # Setup your min temperature here
-        self.DATABASE_URL = "157.230.69.113:5432"  # Setup your database here
-        dbconfig = load_config()
-        self.conn = connect(dbconfig)
-                
+        # Temperature configuration
+        self.T_MAX = 60
+        self.T_MIN = 30
+
+        # Database configurations
+        self.DATABASE_URL = "157.230.69.113:5432"
+        db_config = DatabaseConfig()
+        db_params = db_config.load_config()
+        self.conn = db_config.connect(db_params)
+
     def __del__(self):
         if self._hub_connection is not None:
             self._hub_connection.stop()
@@ -92,28 +96,29 @@ class App:
         """Save sensor data into database."""
         try:
             cur = self.conn.cursor()
-            sql = """INSERT INTO temperatures (timestamp, temperature) VALUES (%s, %s)"""
-            cur.execute(sql,(timestamp,temperature))
+            sql = (
+                """INSERT INTO temperatures (timestamp, temperature) VALUES (%s, %s)"""
+            )
+            cur.execute(sql, (timestamp, temperature))
             self.conn.commit()
-            pass
         except requests.exceptions.RequestException as e:
             print(e)
-            print("The database commit failed for values : %s,%s",(timestamp,temperature))
-            pass
+            print(
+                "The database commit failed for values : %s,%s",
+                (timestamp, temperature),
+            )
 
     def save_event_to_database(self, timestamp, event):
         """Save sensor data into database."""
         try:
             cur = self.conn.cursor()
             sql = """INSERT INTO events (timestamp, event) VALUES (%s, %s)"""
-            cur.execute(sql,(timestamp,event))
+            cur.execute(sql, (timestamp, event))
             self.conn.commit()
-            
-            pass
         except requests.exceptions.RequestException as e:
             print(e)
-            print("The database commit failed for values : %s,%s",(timestamp,event))
-            pass
+            print("The database commit failed for values : %s,%s", (timestamp, event))
+
 
 if __name__ == "__main__":
     app = App()

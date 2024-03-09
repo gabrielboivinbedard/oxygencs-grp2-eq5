@@ -1,6 +1,8 @@
 # Stage 1: Build the application
 FROM python:3.8-slim AS builder
 
+EXPOSE 8000
+
 WORKDIR /app
 
 # Install build dependencies
@@ -25,7 +27,7 @@ COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
 # Copy the rest of the application code
-COPY src/main.py /app/
+COPY src/ /app/src/
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
