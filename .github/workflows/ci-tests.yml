@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.8' 
+        python-version: '3.8'
     - run: |
         pip install --user --no-cache-dir -r requirements.txt
-        python -m unittest src.test.TestApp
+        python -m unittest test.test
