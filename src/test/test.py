@@ -8,7 +8,7 @@ sys.path.append(sys.path[0]+"\\src")
 print("HERE 2")
 print(sys.path)
 
-from main import App
+from src.main import App
 
 
 class TestApp(unittest.TestCase):
