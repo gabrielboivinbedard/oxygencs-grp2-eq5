@@ -15,4 +15,4 @@ jobs:
         python-version: '3.8' 
     - run: |
         pip install --user --no-cache-dir -r requirements.txt
-        python -m unittest test.test.TestApp
+        python -m unittest src.test.test.TestApp
