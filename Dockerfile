@@ -19,7 +19,7 @@ RUN python -m pip install --user virtualenv
 RUN python -m virtualenv /root/oxygenVenv
 RUN pwd
 RUN ls -al /root/oxygenVenv
-RUN source /root/oxygenVenv/bin/activate
+RUN . /root/oxygenVenv/bin/activate
 
 # Copy only the requirements file and install dependencies
 COPY requirements.txt .
