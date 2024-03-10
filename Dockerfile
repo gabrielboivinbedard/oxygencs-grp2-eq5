@@ -6,7 +6,7 @@ EXPOSE 8000
 WORKDIR /app
 
 # Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk update && apk add -y --no-install-recommends \
     build-essential \
     gcc \
  && rm -rf /var/lib/apt/lists/*
