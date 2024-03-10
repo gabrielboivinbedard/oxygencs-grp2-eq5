@@ -27,17 +27,13 @@ jobs:
       - name: Increment version number
         id: bump_version
         run: |
-          if [ -f version.txt ]; then
-            # Read version components from version.txt
-            source version.txt
-            # Increment patch version
+          if [ -f versionControl.txt ]; then
+            source versionControl.txt
             PATCH=$((PATCH + 1))
           fi
-          # Write updated version components back to version.txt
-          echo "MAJOR=$MAJOR" > version.txt
-          echo "MINOR=$MINOR" >> version.txt
-          echo "PATCH=$PATCH" >> version.txt
-          # Set formatted version as output
+          echo "MAJOR=$MAJOR" > versionControl.txt
+          echo "MINOR=$MINOR" >> versionControl.txt
+          echo "PATCH=$PATCH" >> versionControl.txt
           VERSION="v$MAJOR.$MINOR.$PATCH"
           echo "::set-output name=IMAGE_VERSION::$VERSION"
         if: success()
