@@ -27,10 +27,13 @@ jobs:
       - name: Increment version number
         id: bump_version
         run: |
+          #!/bin/bash
+          chmod +rw versionControl.txt
           if [ -f versionControl.txt ]; then
             source versionControl.txt
             PATCH=$((PATCH + 1))
           fi
+          echo $PATCH
           echo "MAJOR=$MAJOR" > versionControl.txt
           echo "MINOR=$MINOR" >> versionControl.txt
           echo "PATCH=$PATCH" >> versionControl.txt
