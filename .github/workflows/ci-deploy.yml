@@ -24,11 +24,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Increment version number
+        id: bump_version
+        run: |
+          if [ -f version.txt ]; then
+            # Read version components from version.txt
+            source version.txt
+            # Increment patch version
+            PATCH=$((PATCH + 1))
+          fi
+          # Write updated version components back to version.txt
+          echo "MAJOR=$MAJOR" > version.txt
+          echo "MINOR=$MINOR" >> version.txt
+          echo "PATCH=$PATCH" >> version.txt
+          # Set formatted version as output
+          VERSION="v$MAJOR.$MINOR.$PATCH"
+          echo "::set-output name=IMAGE_VERSION::$VERSION"
+        if: success()
+
       - name: Build and push Docker image to DockerHub with latest
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: raphdup/oxygencs-grp2-eq5
-          tags: latest
+          tags: latest, ${{env.IMAGE_VERSION}}
           registry: docker.io
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
