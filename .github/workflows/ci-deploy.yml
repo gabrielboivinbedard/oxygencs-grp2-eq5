@@ -38,7 +38,7 @@ jobs:
           echo "MINOR=$MINOR" >> versionControl.txt
           echo "PATCH=$PATCH" >> versionControl.txt
           VERSION="v$MAJOR.$MINOR.$PATCH"
-          echo "IMAGE_VERSION::$VERSION" >> $GITHUB_ENV
+          echo "IMAGE_VERSION=$VERSION" >> $GITHUB_ENV
         if: success()
 
       - name: Build and push Docker image to DockerHub with latest
