@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM python:3.8-slim AS builder
+FROM python:3.8-alpine AS builder
 
 EXPOSE 8000
 
@@ -16,7 +16,7 @@ COPY requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 # Stage 2: Create the final image
-FROM python:3.8-slim
+FROM python:3.8-alpine
 
 WORKDIR /app
 
