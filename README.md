@@ -13,16 +13,9 @@ This application uses `pipenv`, a tool that aims to bring the best of all packag
 
 ## Getting Started
 
-1. Clone the repository :
+Install the project's dependencies :
 
-```
-git clone https://github.com/MarioGith/log680.git
-cd log680
-```
-
-2. Install the project's dependencies :
-
-```
+```bash
 pipenv install
 ```
 
@@ -40,7 +33,7 @@ You need to setup the following variables inside the App class:
 
 After setup, you can start the program with the following command:
 
-```
+```bash
 pipenv run start
 ```
 
