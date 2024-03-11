@@ -4,16 +4,21 @@ import time
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
 import os
+import argparse
 from configDB import DatabaseConfig
 
 
 class App:
-    def __init__(self):
+    def __init__(self, host, token):
+        if host == None :
+            host = "159.203.50.162"
+        if token == None :
+            token = "a77e02c82ab10e660da7"
         # Configurations
         self._hub_connection = None
         self.TICKS = 10
-        self.HOST = "http://"+ (os.getenv("HOST_IP") if os.getenv("HOST_IP") != None else "159.203.50.162")
-        self.TOKEN =  os.getenv("TOKEN_ROOM") if os.getenv("TOKEN_ROOM") != None else "a77e02c82ab10e660da7"
+        self.HOST = "http://"+ (os.getenv("HOST_IP") if os.getenv("HOST_IP") != None else host)
+        self.TOKEN =  os.getenv("TOKEN_ROOM") if os.getenv("TOKEN_ROOM") != None else token
         print("/*--------------------------------------------*/ Informations /*---------------------------------------------------*/")
         print("Listen to Host :"+self.HOST)
         print("Listen to Token :"+self.TOKEN)
@@ -127,5 +132,9 @@ class App:
 
 
 if __name__ == "__main__":
-    app = App()
+    parser = argparse.ArgumentParser(description='Start Oxygen CS.')
+    parser.add_argument('--host', type=str, required=False, help='Host IP of the habitation')
+    parser.add_argument('--token', type=str, required=False, help='Token of the room')
+    args = parser.parse_args()
+    app = App(args.host, args.token)
     app.start()
