@@ -3,6 +3,7 @@ import json
 import time
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import requests
+import os
 from configDB import DatabaseConfig
 
 
@@ -11,9 +12,14 @@ class App:
         # Configurations
         self._hub_connection = None
         self.TICKS = 10
-        self.HOST = "http://159.203.50.162"
-        self.TOKEN = "a77e02c82ab10e660da7"
-
+        self.HOST = "http://"+ (os.getenv("HOST_IP") if os.getenv("HOST_IP") != None else "159.203.50.162")
+        self.TOKEN =  os.getenv("TOKEN_ROOM") if os.getenv("TOKEN_ROOM") != None else "a77e02c82ab10e660da7"
+        print("/*--------------------------------------------*/ Informations /*---------------------------------------------------*/")
+        print("Listen to Host :"+self.HOST)
+        print("Listen to Token :"+self.TOKEN)
+        print("To modify these when running the docker image please define HOST_IP and TOKEN_ROOM environment variables :")
+        print('docker run -e HOST_IP={yourHostIP} -e TOKEN_ROOM={yourToken} {imageName}:{tag}')
+        print("/*-----------------------------------------------------------------------------------------------------------------*/")
         # Temperature configuration
         self.T_MAX = 60
         self.T_MIN = 30
