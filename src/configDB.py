@@ -1,10 +1,13 @@
 from configparser import ConfigParser
+import os
 import psycopg2
 
 
 class DatabaseConfig:
-    def __init__(self, filename="./src/database.ini", section="postgresql"):
-        self.filename = filename
+    def __init__(self, filename="database.ini", section="postgresql"):
+        # Calcule le chemin absolu du fichier database.ini basé sur l'emplacement de ce fichier (configDB.py)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.filename = os.path.join(base_dir, filename)
         self.section = section
 
     def load_config(self):
