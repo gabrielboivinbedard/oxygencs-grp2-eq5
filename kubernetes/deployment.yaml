@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hvac-controller-deployment
+  labels:
+    app: hvac-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hvac-controller
+  template:
+    metadata:
+      labels:
+        app: hvac-controller
+    spec:
+      containers:
+      - name: hvac-controller
+        image: raphdup/oxygencs-grp2-eq5:latest
+        ports:
+        - containerPort: 8000
+          name: hvac-port
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
