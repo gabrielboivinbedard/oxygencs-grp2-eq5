@@ -17,6 +17,7 @@ spec:
       containers:
       - name: hvac-controller
         image: raphdup/oxygencs-grp2-eq5:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
           name: hvac-port
