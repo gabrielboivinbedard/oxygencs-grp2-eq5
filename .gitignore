@@ -140,3 +140,4 @@ kubeconfig.yaml
 Pipfile.lock
 
 .idea
+/kubernetes/kubeconf.yaml
