@@ -24,8 +24,8 @@ spec:
           name: hvac-port
         resources:
           limits:
-            memory: "200Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "50m"
           requests:
             memory: "64Mi"
-            cpu: "250m"
+            cpu: "50m"
