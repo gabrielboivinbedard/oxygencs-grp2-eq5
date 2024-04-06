@@ -41,7 +41,7 @@ class App:
             "/*-----------------------------------------------------------------------------------------------------------------*/"
         )
         # Temperature configuration
-        self.T_MAX = 60
+        self.T_MAX = 45
         self.T_MIN = 30
 
         # Database configurations
