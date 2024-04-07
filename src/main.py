@@ -57,8 +57,8 @@ class App:
         self.TICKS = 10
 
         # Temperature configuration
-        self.T_MAX = 45
-        self.T_MIN = 30
+        self.T_MAX = os.getenv("T_MAX", "45")
+        self.T_MIN = os.getenv("T_MIN", "20")
 
         # Database configurations
         self.DATABASE_URL = "157.230.69.113:5432"

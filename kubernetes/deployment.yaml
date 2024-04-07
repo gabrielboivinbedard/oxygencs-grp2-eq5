@@ -10,6 +10,11 @@ spec:
   selector:
     matchLabels:
       app: hvac-controller
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       name: hvac-controller-deployment
@@ -31,6 +36,16 @@ spec:
               configMapKeyRef:
                 name: hvac-controller-config
                 key: token
+          - name: T_MIN
+            valueFrom:
+              configMapKeyRef:
+                name: hvac-controller-config
+                key: T_MIN
+          - name: T_MAX
+            valueFrom:
+              configMapKeyRef:
+                name: hvac-controller-config
+                key: T_MAX
         resources:
           limits:
             memory: "128Mi"
