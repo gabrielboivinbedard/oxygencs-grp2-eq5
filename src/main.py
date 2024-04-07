@@ -12,7 +12,7 @@ from configDB import DatabaseConfig
 
 class App:
 
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self, host, token):
         signal.signal(signal.SIGINT, self.signal_handler)
@@ -23,6 +23,7 @@ class App:
         self.HOST = "http://" + host
         self.TOKEN = token
 
+        # Debug: Verifying the environment variables
         if self.DEBUG:
             test_host = os.getenv("HVAC_HOST")
             if test_host is not None:
@@ -40,12 +41,13 @@ class App:
         )
         print("Listen to Host :" + self.HOST)
         print("Listen to Token :" + self.TOKEN)
-        print(
-            "To modify these when running the docker image please define HOST_IP and TOKEN_ROOM environment variables :"
-        )
-        print(
-            "docker run -e HOST_IP={yourHostIP} -e TOKEN_ROOM={yourToken} {imageName}:{tag}"
-        )
+        if self.DEBUG:
+            print(
+                "To modify these when running the docker image please define HOST_IP and TOKEN_ROOM environment variables :"
+            )
+            print(
+                "docker run -e HOST_IP={yourHostIP} -e TOKEN_ROOM={yourToken} {imageName}:{tag}"
+            )
         print(
             "/*-----------------------------------------------------------------------------------------------------------------*/"
         )
