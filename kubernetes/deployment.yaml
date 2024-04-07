@@ -12,6 +12,7 @@ spec:
       app: hvac-controller
   template:
     metadata:
+      name: hvac-controller-deployment
       labels:
         app: hvac-controller
     spec:
@@ -19,9 +20,17 @@ spec:
       - name: hvac-controller
         image: raphdup/oxygencs-grp2-eq5:latest
         imagePullPolicy: Always
-        ports:
-        - containerPort: 8000
-          name: hvac-port
+        env:
+          - name: HVAC_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: hvac-controller-config
+                key: HVAC_HOST_KEY
+          - name: TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: hvac-controller-config
+                key: token
         resources:
           limits:
             memory: "128Mi"
@@ -29,3 +38,4 @@ spec:
           requests:
             memory: "64Mi"
             cpu: "50m"
+      restartPolicy: Always
