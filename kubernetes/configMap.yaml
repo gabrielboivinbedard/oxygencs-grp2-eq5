@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hvac-controller-config
+data:
+  HVAC_HOST_KEY: "159.203.50.162"
+  token: "a77e02c82ab10e660da7"
+  T_MIN: "40"
+  T_MAX: "60"

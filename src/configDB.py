@@ -26,10 +26,13 @@ class DatabaseConfig:
 
     def connect(self, config):
         try:
+            print("Connecting to PostgreSQL server with config:")
+            print(config)
             with psycopg2.connect(**config) as conn:
                 print("Connected to the PostgreSQL server.")
                 return conn
         except (psycopg2.DatabaseError, Exception) as error:
+            print("Failed to connect to the PostgreSQL server.")
             print(error)
             raise ConnectionError(
                 "Failed to connect to the PostgreSQL server."

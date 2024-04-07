@@ -25,7 +25,7 @@ class TestApp(unittest.TestCase):
     def test_take_action_do_nothing(self):
         app = App(None,None)
         with patch.object(app, "send_action_to_hvac") as mock_send_action_to_hvac:
-            app.take_action(50, time.time())
+            app.take_action(40, time.time())
             mock_send_action_to_hvac.assert_not_called()
 
 

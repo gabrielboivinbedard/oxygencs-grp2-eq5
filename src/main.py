@@ -11,38 +11,54 @@ from configDB import DatabaseConfig
 
 
 class App:
+
+    DEBUG = False
+
     def __init__(self, host, token):
         signal.signal(signal.SIGINT, self.signal_handler)
         if host is None:
-            host = "159.203.50.162"
+            host = os.getenv("HVAC_HOST", "159.203.50.162")
         if token is None:
-            token = "a77e02c82ab10e660da7"
-        # Configurations
-        self._hub_connection = None
-        self.TICKS = 10
-        self.HOST = "http://" + (
-            os.getenv("HOST_IP") if os.getenv("HOST_IP") is not None else host
-        )
-        self.TOKEN = (
-            os.getenv("TOKEN_ROOM") if os.getenv("TOKEN_ROOM") is not None else token
-        )
+            token = os.getenv("TOKEN", "a77e02c82ab10e660da7")
+        self.HOST = "http://" + host
+        self.TOKEN = token
+
+        # Debug: Verifying the environment variables
+        if self.DEBUG:
+            test_host = os.getenv("HVAC_HOST")
+            if test_host is not None:
+                print("test_host = " + test_host)
+            else:
+                print("test_host IS NULL")
+            test_token = os.getenv("TOKEN")
+            if test_token is not None:
+                print("test_token = " + test_token)
+            else:
+                print("test_token IS NULL")
+
         print(
             "/*--------------------------------------------*/ Informations /*---------------------------------------------------*/"
         )
         print("Listen to Host :" + self.HOST)
         print("Listen to Token :" + self.TOKEN)
-        print(
-            "To modify these when running the docker image please define HOST_IP and TOKEN_ROOM environment variables :"
-        )
-        print(
-            "docker run -e HOST_IP={yourHostIP} -e TOKEN_ROOM={yourToken} {imageName}:{tag}"
-        )
+        if self.DEBUG:
+            print(
+                "To modify these when running the docker image please define HOST_IP and TOKEN_ROOM environment variables :"
+            )
+            print(
+                "docker run -e HOST_IP={yourHostIP} -e TOKEN_ROOM={yourToken} {imageName}:{tag}"
+            )
         print(
             "/*-----------------------------------------------------------------------------------------------------------------*/"
         )
+
+        # Configurations
+        self._hub_connection = None
+        self.TICKS = 10
+
         # Temperature configuration
-        self.T_MAX = 60
-        self.T_MIN = 30
+        self.T_MAX = os.getenv("T_MAX", "45")
+        self.T_MIN = os.getenv("T_MIN", "20")
 
         # Database configurations
         self.DATABASE_URL = "157.230.69.113:5432"
