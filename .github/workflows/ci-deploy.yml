@@ -32,7 +32,7 @@ jobs:
     needs: test-and-analyze
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build and push Docker image to DockerHub with latest
         uses: mr-smithers-excellent/docker-build-push@v6
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Delete deployment if exist
         uses:  actions-hub/kubectl@master
