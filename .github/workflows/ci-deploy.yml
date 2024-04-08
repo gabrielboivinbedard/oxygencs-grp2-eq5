@@ -69,6 +69,21 @@ jobs:
         with:
           args: delete deployment hvac-controller-deployment
         continue-on-error: true
+      
+      - name: Delete configMap if exist
+        uses:  actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+        with:
+          args: delete configmap hvac-controller-config
+        continue-on-error: true
+
+      - name: Update the configMap
+        uses:  actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+        with:
+          args: apply -f ./kubernetes/configMap.yaml
 
       - name: Update the pod
         uses:  actions-hub/kubectl@master
