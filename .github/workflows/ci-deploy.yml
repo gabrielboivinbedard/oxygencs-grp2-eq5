@@ -2,7 +2,7 @@ name: CI for build and push image on DockerHub
 
 on:
   push:
-    branches: ["main"]
+    branches: ["reload_configMap"]
 
 jobs:
   test-and-analyze:
@@ -34,24 +34,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build and push Docker image to DockerHub with latest
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: raphdup/oxygencs-grp2-eq5
-          tags: latest
-          registry: docker.io
-          dockerfile: Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push Docker image to DockerHub with dockerId
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: raphdup/oxygencs-grp2-eq5
-          registry: docker.io
-          dockerfile: Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+#      - name: Build and push Docker image to DockerHub with latest
+#        uses: mr-smithers-excellent/docker-build-push@v6
+#        with:
+#          image: raphdup/oxygencs-grp2-eq5
+#          tags: latest
+#          registry: docker.io
+#          dockerfile: Dockerfile
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Build and push Docker image to DockerHub with dockerId
+#        uses: mr-smithers-excellent/docker-build-push@v6
+#        with:
+#          image: raphdup/oxygencs-grp2-eq5
+#          registry: docker.io
+#          dockerfile: Dockerfile
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
 
   update-kubernetes-cluster:
 
@@ -69,6 +69,21 @@ jobs:
         with:
           args: delete deployment hvac-controller-deployment
         continue-on-error: true
+      
+      - name: Delete configMap if exist
+        uses:  actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+        with:
+          args: delete configmap hvac-controller-config
+        continue-on-error: true
+
+      - name: Update the configMap
+        uses:  actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+        with:
+          args: apply -f ./kubernetes/configMap.yaml
 
       - name: Update the pod
         uses:  actions-hub/kubectl@master
