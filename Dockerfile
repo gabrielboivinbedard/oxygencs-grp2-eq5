@@ -10,6 +10,7 @@ RUN apk update \
  && rm -rf /var/lib/apt/lists/*
 
 # Copy only the requirements file and install dependencies
+RUN pip install --upgrade pip
 COPY requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
